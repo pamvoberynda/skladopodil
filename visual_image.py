@@ -8,7 +8,7 @@ def cr_syllables(text: str) -> str:
 copy_to_clipboard_js = """
 (text) => {
     navigator.clipboard.writeText(text).then(() => {
-        alert("Copied to clipboard!");
+        
     }).catch(err => {
         console.error("Failed to copy: ", err);
     });
@@ -24,5 +24,5 @@ with gr.Blocks() as demo:
             out = gr.Textbox(label="There will be displayed the syllables")
             btn_copy = gr.Button("Copy")
     btn_syllabize.click(fn=cr_syllables, inputs=inp, outputs=out)
-    btn_copy.click(fn=None, inputs=[inp], outputs=None, js=copy_to_clipboard_js)
+    btn_copy.click(fn=None, inputs=None, outputs=[out], js=copy_to_clipboard_js)
 demo.launch()
