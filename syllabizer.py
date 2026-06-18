@@ -11,10 +11,10 @@ def digitilize_word(word: str) -> str:
     dig_word = str()
     lenght = len(word)
     for index, letter in enumerate(word):
-        if index < lenght-1 and word[index+1] == word[index] and word[index] not in golosni:
+        if index < lenght-1 and word[index+1] == word[index] and word[index] in sonorni:
             dig_word += "3"
             continue
-        if index > 0 and word[index] == word[index-1] and word[index] not in golosni:
+        if index > 0 and word[index] == word[index-1] and word[index] in sonorni:
             dig_word += "3"
             continue
         if letter in gluhi:
@@ -62,16 +62,16 @@ def review_raw_syllables(raw_syllables: list) -> list:
             has_next = i + 1 < lenght
             prev_syll = raw_syllables[i-1] if i != 0 else []
             curr_syll = raw_syllables[i]
-            next_syll = next_syll = raw_syllables[i + 1] if has_next else []
-            if 4 not in next_syll and 5 not in curr_syll: # 24 | 25 -> 2425 
-                curr_syll.extend(next_syll)
-                done_syllables.append(curr_syll)
-                i +=2
-                continue
+            next_syll = raw_syllables[i + 1] if has_next else []
+            print(f"curr is {curr_syll}")
+            
+            
+            #if 3 in curr_syll and : # x | 3n | y -> x | 3n+y
+            #    if 
             if 2 in curr_syll:
                 if len(curr_syll) == 1 and i-1 >= 0: # 24 | 2 -> 242
                     curr_syll.extend(prev_syll)
-                    curr_syll.extend(curr_syll)
+                    curr_syll.extend(curr_syll) # <- 18.VI.26 на холеру це тут?
                     done_syllables.append(curr_syll)
                     curr_syll = next_syll
                 if len(curr_syll) == 1 and i-1 <= 0: # 2 | 42 -> 242
@@ -88,9 +88,50 @@ def review_raw_syllables(raw_syllables: list) -> list:
                             prev_syll.append(cur_symb)
                             curr_syll.pop(0) 
                             break
-            if len(curr_syll) == 1 and curr_syll[0] not in (4,5): # 1 | 04 -> 104
+            
+            
+            if 4 not in curr_syll: #prescribe logic of essential having vowel in a syllable: 24 | 13 | 143 -> 24 | 13143
+                
+                if next_syll and 4 in next_syll:
+                    tempsyll = next_syll
+                    next_syll = curr_syll
+                    next_syll.extend(tempsyll)
+                    raw_syllables[i + 1] = next_syll                   
+                    i+=1
+                    continue
+                elif prev_syll and 4 in prev_syll:   
+                    print("nigga")                 
+                    tempsyll = prev_syll                    
+                    prev_syll = curr_syll                    
+                    tempsyll.extend(prev_syll)                
+                    done_syllables[-1] = tempsyll               
+                    i+=1
+                    continue
+            
+            
+            print(f"currrrr is {curr_syll}")
+            if len(curr_syll) == 1 and curr_syll[0] not in (4,5) and next_syll != []: # 1 | 04 -> 104
                 curr_syll.extend(next_syll)
                 i+=1
+            elif len(curr_syll) == 1 and curr_syll[0] not in (4,5) and next_syll == [] and prev_syll: # 14 | 0 -> 140
+                tempsyll = prev_syll
+                print(tempsyll)
+                prev_syll = curr_syll
+                print(prev_syll)
+                tempsyll.extend(prev_syll)
+                print(tempsyll)
+                done_syllables[-1] = tempsyll
+                print(done_syllables[-1])
+                i+=1
+                print(i)
+                continue
+
+            if 4 not in next_syll and 5 not in curr_syll and 3 not in next_syll and len(curr_syll) != 1: # 24 | 25 -> 2425 
+                print(curr_syll)
+                curr_syll.extend(next_syll)
+                done_syllables.append(curr_syll)
+                i +=2
+                continue
 
             i+=1
             done_syllables.append(curr_syll)
@@ -114,7 +155,13 @@ def separate_syllables(word: str, separator="-"):
     word = word.lower()
     dword = digitilize_word(word)
     raw_syllables = mk_raw_syllables(dword)
+    print("\t raw syllables:")
+    for raw in raw_syllables:
+        print(raw)
     done_syllables = review_raw_syllables(raw_syllables)
+    print("\t done syllables:")
+    for done in done_syllables:
+        print(done)
     correlated_syllables = correlate_review_word(done_syllables, word)
     lenght = len(correlated_syllables)
     add_sep_idx = int()
@@ -126,13 +173,8 @@ def separate_syllables(word: str, separator="-"):
     return output
 
 
-worde = """Кольщик, наколи мені куполи,
-Поруч — чудотворний хрест з іконами,
-Щоб там дзвонили дзвони
-З переливами та передзвонами.
- 
-Наколи мені будиночок біля струмка,
-Нехай тече на волі тонкою цівкою.
-Щоб від нього кравець-суддя
-Не відгородив мене ґратами."""
+worde = """руський русский руский Символом 
+Символ найбільш мирних мирний мирні"""
+
+worde = """найбільш"""
 print(separate_syllables(worde))
