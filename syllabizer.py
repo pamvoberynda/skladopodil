@@ -1,7 +1,7 @@
 # creates digitilized view of letters
 gluhi = ("ц", "с", "к", "ф", "п", "т", "х", "ш", "ч", "щ") #0
 dzvinki = ("д", "г", "ґ", "з", "б", "ж") #1
-sonorni = ("й", "н", "м", "л", "р", "в", "`", "ʼ") #2
+sonorni = ("й", "н", "м", "л", "р", "в") #2
 double_soft = ("ь",) #double sonorni or soft sign
 golosni = ("а", "я", "о", "е", "є", "у", "ю", "и", "і", "ї") #4
 #5 - space or unknown character etc
