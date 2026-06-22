@@ -5,7 +5,7 @@ sonorni = ("й", "н", "м", "л", "р", "в", "`", "ʼ") #2
 double_soft = ("ь",) #double sonorni or soft sign
 golosni = ("а", "я", "о", "е", "є", "у", "ю", "и", "і", "ї") #4
 #5 - space or unknown character etc
-apostrof = ("`", "ʼ") #5
+apostrof = ("`", "ʼ", "'") #5
 letters = gluhi + dzvinki + sonorni + golosni + double_soft + apostrof
 
 def digitilize_word(word: str) -> str:
@@ -146,6 +146,11 @@ def separate_syllables(word: str, separator="-"):
     lenght = len(correlated_syllables)
     add_sep_idx = int()
     for syllable in correlated_syllables:
+        if syllable[-1] in apostrof: #шоб імʼя показувало як ім-я, а не імʼя
+            output+=syllable[:-1]
+            add_sep_idx+=1
+            output+= separator
+            continue
         output += syllable
         if add_sep_idx < lenght-1 and output[-1] in letters:
             output+= separator
@@ -163,6 +168,7 @@ worde = """Ще зима не минула, я побачив тоді,
 Сяйвом грації своєї, була кращою з жінок.
 Ну, а погляд кришталевий, в моїм серці назавжди,
 Ти в душі залишала слід від ніжної ходи."""
+print(worde)
 print("\tПриклад складоподілу:")
 print(separate_syllables(worde))
 print()
