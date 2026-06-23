@@ -1,4 +1,4 @@
-# Pravyla skladopodilu za O. Tocjkoju
+# Pravyla skladopodilu za N.I. Tocjkoju
 
 ## Indeksy zvuchnosty:
 0 - gluhi
