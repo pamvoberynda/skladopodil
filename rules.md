@@ -2,16 +2,23 @@
 
 ## Indeksy zvuchnosty:
 0 - gluhi
+
 1 - dzvinki
+
 2 - sonorni
+
 3 - dublety, dygrafy typu nn, rr, ll etc.
+
 4 - golosni
 
 ## Umovni poznaky
 -> - vyvid, naslidok
+
 | - mezha skladu
+
 n - chyslo v mezhah [0,2]
-(probil) - poslidovnistj liter 
+
+(probil) - poslidovnistj liter
 
 ## Vlasne pravyla:
 
